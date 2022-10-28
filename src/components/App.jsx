@@ -6,7 +6,7 @@ import ContactsList from './ContactsList/ContactsList';
 import ContactsFilter from './ContactsFilter/ContactsFilter';
 
 class App extends Component {
-  #previousFilterSearch = null;
+  #previousFilterSearch = '';
 
   state = {
     contacts: [],
