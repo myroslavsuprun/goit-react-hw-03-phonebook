@@ -10,13 +10,20 @@ class App extends Component {
 
   state = {
     contacts: [],
-    filter: '',
+    filter: [],
   };
 
   componentDidMount() {
     this.setState({
       contacts: JSON.parse(localStorage.getItem('contacts')) || [],
     });
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.contacts === this.state.contacts) return;
+
+    localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    this.filterContactsBySearch(this.#previousFilterSearch);
   }
 
   onSubmit = contact => {
@@ -27,31 +34,21 @@ class App extends Component {
 
     if (foundContact) return alert(`${contact.name} is already in contacts`);
 
-    this.setState(
-      prevState => ({
-        contacts: [...prevState.contacts, contact],
-      }),
-      () => {
-        localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-        this.filterContactsBySearch(this.#previousFilterSearch);
-      }
-    );
+    this.setState(prevState => ({
+      contacts: [...prevState.contacts, contact],
+    }));
   };
 
   onContactDelete = contactName => {
     const newContacts = this.state.contacts.filter(contact => {
       if (contactName === contact.name) return false;
-      else return true;
+
+      return true;
     });
-    this.setState(
-      {
-        contacts: newContacts,
-      },
-      () => {
-        localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
-        this.filterContactsBySearch(this.#previousFilterSearch);
-      }
-    );
+
+    this.setState({
+      contacts: newContacts,
+    });
   };
 
   filterContactsBySearch = filter => {
