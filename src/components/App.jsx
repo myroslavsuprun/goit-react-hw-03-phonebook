@@ -10,7 +10,7 @@ class App extends Component {
 
   state = {
     contacts: [],
-    filter: [],
+    filteredContacts: [],
   };
 
   componentDidMount() {
@@ -40,14 +40,14 @@ class App extends Component {
   };
 
   onContactDelete = contactName => {
-    const newContacts = this.state.contacts.filter(contact => {
+    const contacts = this.state.contacts.filter(contact => {
       if (contactName === contact.name) return false;
 
       return true;
     });
 
     this.setState({
-      contacts: newContacts,
+      contacts,
     });
   };
 
@@ -57,13 +57,13 @@ class App extends Component {
       return contactName.includes(filter.toLowerCase());
     });
     this.setState(() => ({
-      filter: filteredContacts,
+      filteredContacts,
     }));
     this.#previousFilterSearch = filter;
   };
 
   render() {
-    const { contacts, filter } = this.state;
+    const { contacts, filteredContacts } = this.state;
 
     return (
       <>
@@ -73,7 +73,7 @@ class App extends Component {
         <Section title="Contacts">
           <ContactsFilter filterFunc={this.filterContactsBySearch} />
           <ContactsList
-            contacts={filter ? filter : contacts}
+            contacts={filteredContacts ? filteredContacts : contacts}
             onDeleteClick={this.onContactDelete}
           />
         </Section>
