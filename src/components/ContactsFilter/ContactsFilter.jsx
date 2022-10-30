@@ -15,7 +15,7 @@ class ContactsFilter extends Component {
   render() {
     const { filter } = this.props;
     return (
-      <FormLabel htmlFor={this.filterInputId}>
+      <FormLabel key={this.filterInputId}>
         Find contacts by name
         <FormInput
           value={filter}
